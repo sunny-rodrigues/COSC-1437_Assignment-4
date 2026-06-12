@@ -3,7 +3,7 @@
 // Course  : COSC 1437 - Programming Fundamentals II
 // Date    : June 9, 2026
 // Program : Chapter 4 Major Project
-// Option  : [A - Hotel Billing
+// Option  : [A - Hotel Billing]
 // Purpose : Calculates a hotel customer's bill by applying
 // room discounts, loyalty discounts, and sales tax.
 // ============================================================
@@ -119,6 +119,17 @@ assert(taxRate >= 0.0);
 // ============================================================
 
 /*
+Operator Precedence Used in This Program
+
+1. Parentheses ()
+2. Logical NOT !
+3. Relational Operators
+      >  <  >=  <=
+4. Equality Operators
+      ==  !=
+5. Logical AND &&
+6. Logical OR ||
+
 Expression:
 
 !(rooms > 0) || (rate >= 50.0 && rooms != nights)
@@ -142,6 +153,7 @@ Result: true
 // ============================================================
 
 double discountPercent;
+double loyaltyPercent = 0.0;
 int discountTier;
 
 if (roomCount >= MIN_ROOMS_TIER3)
@@ -172,9 +184,11 @@ double subtotal =
 double discounted = subtotal * (1.0 - discountPercent);
 
 // Apply loyalty discount if eligible
-if (discountTier > 0 && nightsStayed >= MIN_NIGHTS_LOYALTY)
+if (roomCount > 0 &&
+    nightsStayed >= MIN_NIGHTS_LOYALTY)
 {
     discounted *= (1.0 - LOYALTY_DISCOUNT);
+    loyaltyPercent = LOYALTY_DISCOUNT;
 }
 
 // Compound Boolean expression using &&
@@ -184,12 +198,15 @@ if (roomCount >= MIN_ROOMS_TIER1 && nightsStayed >= MIN_NIGHTS_LOYALTY)
     cout << "\nCustomer qualifies for both discounts.\n";
 }
 
+// Calculate total savings from discounts
+double savings =
+    subtotal - discounted;
+
 double taxAmount =
     discounted * (taxRate / 100.0);
 
 double totalBill =
     discounted + taxAmount;
-
 // ============================================================
 // SECTION 5 - SWITCH STATEMENT
 // ============================================================
@@ -225,29 +242,29 @@ switch (discountTier)
 // ============================================================
 
 if (roomCount > MIN_ROOMS_TIER1)
-    cout << "Operator > demonstrated.\n";
+    cout << "Customer booked more than 10 rooms.\n";
 
 if (roomCount < MIN_ROOMS_TIER3)
-    cout << "Operator < demonstrated.\n";
+    cout << "Customer did not qualify for Tier 3 pricing.\n";
 
 if (roomCount >= MIN_ROOMS_TIER1)
-    cout << "Operator >= demonstrated.\n";
+    cout << "Customer qualified for a room discount.\n";
 
 if (roomCount <= MIN_ROOMS_TIER3)
-    cout << "Operator <= demonstrated.\n";
+    cout << "Room count is within the standard discount range.\n";
 
 if (discountTier == 0)
-    cout << "Operator == demonstrated.\n";
+    cout << "Customer did not receive a room discount.\n";
 
 if (roomCount != nightsStayed)
-    cout << "Operator != demonstrated.\n";
+    cout << "Number of rooms and nights are different values.\n";
 
 if (roomCount >= MIN_ROOMS_TIER3 ||
     nightsStayed >= MIN_NIGHTS_LOYALTY)
-    cout << "Operator || demonstrated.\n";
+    cout << "Customer qualified for at least one promotional benefit.\n";
 
 if (!(roomCount <= 0))
-    cout << "Operator ! demonstrated.\n";
+    cout << "Reservation contains a valid room count.\n";
 
 // ============================================================
 // SECTION 7 - FLOATING-POINT BUG GUARD
@@ -286,14 +303,6 @@ cout << left << setw(30)
      << "$" << nightlyRate << endl;
 
 cout << left << setw(30)
-     << "Discount Percent Applied:"
-     << discountPercent * 100 << "%" << endl;
-
-cout << left << setw(30)
-     << "Discounted Subtotal:"
-     << "$" << discounted << endl;
-
-cout << left << setw(30)
      << "Rooms Booked:"
      << roomCount << endl;
 
@@ -304,6 +313,22 @@ cout << left << setw(30)
 cout << left << setw(30)
      << "Subtotal Before Tax:"
      << "$" << subtotal << endl;
+
+cout << left << setw(30)
+     << "Discount Percent Applied:"
+     << discountPercent * 100 << "%" << endl;
+     
+cout << left << setw(30)
+     << "Loyalty Discount Applied:"
+     << loyaltyPercent * 100 << "%" << endl;     
+
+cout << left << setw(30)
+     << "Discounted Subtotal:"
+     << "$" << discounted << endl;
+
+cout << left << setw(30)
+     << "Total Savings:"
+     << "$" << savings << endl;   
 
 cout << left << setw(30)
      << "Sales Tax Amount:"
